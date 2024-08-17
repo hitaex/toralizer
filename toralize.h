@@ -2,6 +2,9 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
 #define PROXY "127.0.0.1"
 #define PROXYPORT 9050
 // 8 bit 
@@ -21,7 +24,9 @@ struct proxy_req {
     int32 dstip;
     unsigned char userid[8];
 };
+
 typedef struct proxy_req req; ;
+#define reqsize sizeof(struct proxy_req);
 /*+----+----+----+----+----+----+----+----+
 		| VN | CD | DSTPORT |      DSTIP        |
 		+----+----+----+----+----+----+----+----+
@@ -34,3 +39,7 @@ typedef struct proxy_req req; ;
 
  };
 typedef struct proxy_res res ;
+#define ressize sizeof(struct proxy_res);
+
+req *request(const char*, const int);
+int main(int, char**);
