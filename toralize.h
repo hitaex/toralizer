@@ -21,4 +21,16 @@ struct proxy_req {
     int32 dstip;
     unsigned char userid[8];
 };
+typedef struct proxy_req req; ;
+/*+----+----+----+----+----+----+----+----+
+		| VN | CD | DSTPORT |      DSTIP        |
+		+----+----+----+----+----+----+----+----+
+ # of bytes:	   1    1      2              4*/
+ struct proxy_res{
+    int8 vn;
+    int8 cd;
+    int16 _;
+    int32 __;
 
+ };
+typedef struct proxy_res res ;
