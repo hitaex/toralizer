@@ -7,6 +7,7 @@
 #include <netinet/in.h>
 #define PROXY "127.0.0.1"
 #define PROXYPORT 9050
+#define USERNAME "toraliz"
 // 8 bit 
 typedef unsigned char int8 ;
 // 16 bit
@@ -26,7 +27,7 @@ struct proxy_req {
 };
 
 typedef struct proxy_req req; ;
-#define reqsize sizeof(struct proxy_req);
+#define reqsize sizeof(struct proxy_req)
 /*+----+----+----+----+----+----+----+----+
 		| VN | CD | DSTPORT |      DSTIP        |
 		+----+----+----+----+----+----+----+----+
@@ -39,7 +40,7 @@ typedef struct proxy_req req; ;
 
  };
 typedef struct proxy_res res ;
-#define ressize sizeof(struct proxy_res);
+#define ressize sizeof(struct proxy_res)
 
 req *request(const char*, const int);
 int main(int, char**);
