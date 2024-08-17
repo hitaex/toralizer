@@ -1,41 +1,38 @@
 #include "toralize.h"
 #include <arpa/inet.h>
+#include <dlfcn.h>
+#include <netinet/in.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
 
-  req *request(const char*dstip, const int dstport){
-    req *Req;
-    Req = malloc(reqsize);
-
-
+req *request(struct sockaddr_in *sock2){  
+    req *Req = malloc(reqsize);
     Req->vn = 4;
     Req->cd = 1;
-    Req->dstport = htons(dstport);
-    Req->dstip = inet_addr(dstip);
+    Req->dstport = sock2->sin_port;
+    Req->dstip = sock2->sin_addr.s_addr;
     strncpy((char *)Req->userid, USERNAME, 8);
-    
-    
-      return Req;
-    }
+    return Req;
+}
 
 
-int main(int argc, char *argv[]) {
-    char *host;
-    int port, s;
+// int main(int argc, char *argv[]) {
+    int connect(int s2, const struct sockaddr *sock2,
+    socklen_t addrlen){
+   
+    int  s;
     struct sockaddr_in sock;
     char buf[ressize];
     int success;
-    
-    if (argc < 3) {
-        fprintf(stderr, "USAGE: %s <host> <port>\n", argv[0]);
-        return -1;
-    }
+    char tmp[512];
+    int (*p)(int , const struct sockaddr*,
+    socklen_t );
+   
 
-    host = argv[1];
-    port = atoi(argv[2]);
-
+  
+    p=dlsym(RTLD_NEXT, "connect");
   
     req *Req;
     res *Res;
@@ -48,12 +45,12 @@ int main(int argc, char *argv[]) {
     sock.sin_family = AF_INET;
     sock.sin_port = htons(PROXYPORT);
     sock.sin_addr.s_addr = inet_addr(PROXY);
-    if (connect(s, (struct sockaddr *)&sock, sizeof(sock))){
+    if (p(s, (struct sockaddr *)&sock, sizeof(sock))){
         perror("connect");
         return -1;
     }
     printf("Connected to proxy! ");
-    Req = request(host, port);
+    Req = request((struct sockaddr_in*)&sock2);
     write(s, Req, reqsize);
     memset(buf, 0,ressize);
     if (read(s,buf,ressize)<1){
@@ -71,12 +68,13 @@ int main(int argc, char *argv[]) {
         free(Req);
         return -1;
     }
-    printf("successfully connected through the proxy to %s:%d\n", host ,port);
-    close(s);
+    printf("successfully connected through the proxy ");
+    
+    dup2(s, s2);
     free(Req);
     
 
-    close(s);
+    
 
     
     return 0;
