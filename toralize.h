@@ -5,6 +5,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
+#include <dlfcn.h>
 #define PROXY "127.0.0.1"
 #define PROXYPORT 9050
 #define USERNAME "toraliz"
@@ -42,5 +43,5 @@ typedef struct proxy_req req; ;
 typedef struct proxy_res res ;
 #define ressize sizeof(struct proxy_res)
 
-req *request(const char*, const int);
-int main(int, char**);
+req *request(struct sockaddr_in* sock2);
+int connect(int , const struct sockaddr*,socklen_t );
