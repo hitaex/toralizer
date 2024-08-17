@@ -1,0 +1,1 @@
+gcc toralize.c -o toralize
