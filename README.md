@@ -42,13 +42,15 @@ To install Toralize, follow these steps:
     "${@}"
     unset LD_PRELOAD' | sudo tee /usr/bin/toralize > /dev/null
     ```
-OR if you use Bin (Default):
+
+Bash alternatve:
  ```sh
-    echo '#!/bin/bin
+    echo '#!/bin/bash
     export LD_PRELOAD=/path/to/toralizer/toralize.so
     "${@}"
     unset LD_PRELOAD' | sudo tee /usr/bin/toralize > /dev/null
     ```
+```
 
 4. Set the appropriate permissions for the script:
 
@@ -61,3 +63,4 @@ Now you can run any command anonymously by using `toralize`!
 ## License
 
 This project is licensed under the GNU General Public License v3.0. See the [LICENSE](https://www.gnu.org/licenses/gpl-3.0.en.html) file for details.
+made by t4em@discord 
