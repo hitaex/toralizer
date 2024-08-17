@@ -1,1 +1,2 @@
-gcc toralize.c -o toralize
+all:
+	clang toralize.c -o toralize.o
